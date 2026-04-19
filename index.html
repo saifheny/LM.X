@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>نظام الامتحانات الآمن — لوحة التحكم</title>
+    <meta name="description" content="نظام امتحانات إلكتروني آمن مع حماية متقدمة ضد الغش">
+    <meta property="og:title" content="نظام الامتحانات الآمن">
+    <meta property="og:description" content="نظام امتحانات إلكتروني آمن مع حماية متقدمة ضد الغش">
+    <meta property="og:image" content="https://i.postimg.cc/kDrzDHGN/image-(16).jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-right">
+            <div class="header-logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+            </div>
+            <div class="header-info">
+                <div class="header-title">نظام الامتحانات الآمن</div>
+                <div class="header-sub">لوحة التحكم</div>
+            </div>
+        </div>
+        <div class="header-center">
+            <button class="nav-pill active" data-view="builder"><i class="fa-solid fa-plus"></i><span>إنشاء</span></button>
+            <button class="nav-pill" data-view="exams"><i class="fa-solid fa-layer-group"></i><span>الامتحانات</span></button>
+        </div>
+        <div class="header-right-end">
+            <div class="teacher-chip" id="teacher-chip">
+                <div class="teacher-chip-av" id="teacher-chip-av"></div>
+                <span id="teacher-name-label">المعلم</span>
+                <i class="fa-solid fa-chevron-down" style="font-size:0.65rem;opacity:0.5;"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="toast-area" id="toast-area"></div>
+
+    <main class="main">
+
+        <section class="view active" id="view-builder">
+            <div class="page-head">
+                <div>
+                    <h2 class="page-title" id="builder-title">إنشاء امتحان جديد</h2>
+                    <p class="page-desc" id="builder-desc">أضف الأسئلة والخيارات وارفع الامتحان مباشرة</p>
+                </div>
+            </div>
+
+            <div class="editing-banner hidden" id="editing-banner">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>أنت بتعدل على امتحان موجود</span>
+                <button class="btn btn-sm btn-soft" id="btn-cancel-edit">إلغاء</button>
+            </div>
+
+            <div class="form-grid">
+                <div class="field-wrap">
+                    <label for="exam-title">عنوان الامتحان</label>
+                    <input type="text" class="field" id="exam-title" placeholder="مثال: امتحان الرياضيات — الباب الأول">
+                </div>
+                <div class="field-wrap">
+                    <label for="exam-duration">المدة (دقيقة)</label>
+                    <input type="number" class="field" id="exam-duration" placeholder="30" min="1" max="300">
+                </div>
+                <div class="field-wrap">
+                    <label for="exam-max-attempts">عدد المحاولات</label>
+                    <select class="field" id="exam-max-attempts">
+                        <option value="0">غير محدود</option>
+                        <option value="1" selected>محاولة واحدة</option>
+                        <option value="2">محاولتان</option>
+                        <option value="3">3 محاولات</option>
+                        <option value="5">5 محاولات</option>
+                    </select>
+                </div>
+                <div class="field-wrap" style="display:flex;align-items:center;gap:10px;padding:10px 0;">
+                    <label for="show-correct-toggle" style="margin:0;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:0.82rem;">
+                        <input type="checkbox" id="show-correct-toggle" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;">
+                        <span><i class="fa-solid fa-eye" style="color:var(--accent);margin-left:4px;"></i> السماح للطالب برؤية الإجابات الصحيحة بعد التسليم</span>
+                    </label>
+                </div>
+            </div>
+
+            <div id="questions-container"></div>
+
+            <div class="builder-footer">
+                <button class="btn btn-soft" id="btn-add-question">
+                    <i class="fa-solid fa-plus"></i> إضافة سؤال
+                </button>
+                <button class="btn btn-accent" id="btn-upload-exam">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> رفع الامتحان
+                </button>
+            </div>
+        </section>
+
+        <section class="view" id="view-exams">
+            <div class="page-head">
+                <div>
+                    <h2 class="page-title">امتحاناتي</h2>
+                    <p class="page-desc">إدارة الامتحانات الخاصة بك</p>
+                </div>
+            </div>
+            <div id="exams-list">
+                <div class="empty-state" id="exams-empty">
+                    <div class="empty-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h3>مفيش امتحانات لسه</h3>
+                    <p>أنشئ أول امتحان من تبويب "إنشاء"</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="view" id="view-results">
+            <div class="page-head">
+                <div>
+                    <h2 class="page-title" id="results-title">النتائج</h2>
+                    <p class="page-desc" id="results-desc"></p>
+                </div>
+                <button class="back-btn" id="btn-back-results"><i class="fa-solid fa-arrow-right"></i> رجوع</button>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-box"><div class="val" id="s-total">0</div><div class="lab">الطلاب</div></div>
+                <div class="stat-box"><div class="val" id="s-avg">0%</div><div class="lab">المتوسط</div></div>
+                <div class="stat-box"><div class="val" id="s-pass">0</div><div class="lab">ناجح</div></div>
+                <div class="stat-box"><div class="val" id="s-cheat">0</div><div class="lab">غش</div></div>
+            </div>
+
+            <div class="leaderboard-wrap" id="leaderboard-wrap" style="display:none;">
+                <div class="section-label"><i class="fa-solid fa-trophy"></i> المتفوقون</div>
+                <div class="leaderboard" id="leaderboard"></div>
+            </div>
+
+            <div class="section-label" style="margin-bottom:0.6rem;"><i class="fa-solid fa-list-ul"></i> جميع الطلاب</div>
+            <div class="data-table">
+                <table>
+                    <thead><tr><th>#</th><th>الطالب</th><th>الدرجة</th><th>الوقت المستغرق</th><th>الحالة</th><th></th></tr></thead>
+                    <tbody id="stu-tbody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="view" id="view-report">
+            <div class="page-head">
+                <h2 class="page-title">تقرير تفصيلي</h2>
+                <button class="back-btn" id="btn-back-report"><i class="fa-solid fa-arrow-right"></i> رجوع</button>
+            </div>
+            <div id="rpt-header"></div>
+
+            <div class="proctor-section" id="proctor-section" style="display:none;">
+                <h3><i class="fa-solid fa-camera"></i> تقرير مراقبة الكاميرا (ذكاء اصطناعي)</h3>
+                <div class="proctor-summary">
+                    <div class="proctor-stat"><div class="pval" id="p-total">0</div><div class="plab">إجمالي اللقطات</div></div>
+                    <div class="proctor-stat flagged"><div class="pval" id="p-flagged">0</div><div class="plab">لقطات مشبوهة</div></div>
+                    <div class="proctor-stat clean"><div class="pval" id="p-clean">0</div><div class="plab">سلوك طبيعي</div></div>
+                    <div class="proctor-stat"><div class="pval" id="p-pct">0%</div><div class="plab">نسبة الشك</div></div>
+                </div>
+                <div class="proctor-events" id="proctor-events"></div>
+            </div>
+
+            <div id="rpt-questions"></div>
+            <div class="ai-section">
+                <div class="ai-section-head">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>تحليل ذكي للسلوك</span>
+                </div>
+                <button class="ai-btn" id="btn-ai-analyze"><i class="fa-solid fa-wand-magic-sparkles"></i> تحليل بالذكاء الاصطناعي</button>
+                <div id="ai-output"></div>
+            </div>
+            <div class="logs-wrap">
+                <div class="section-label"><i class="fa-solid fa-timeline"></i> سجل النشاط</div>
+                <div class="log-list" id="rpt-log-list"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="modal-bg" id="modal-upload">
+        <div class="modal">
+            <button class="modal-x" id="modal-upload-x"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-ic ok"><i class="fa-solid fa-check"></i></div>
+            <h2>تم الرفع بنجاح!</h2>
+            <p>شارك الرابط ده مع الطلاب</p>
+            <div class="copy-box">
+                <input type="text" id="exam-link-input" readonly>
+                <button class="cp-btn" id="btn-copy-link">نسخ</button>
+            </div>
+            <p style="font-size:0.78rem;margin-bottom:0;color:var(--text-2);">كود الامتحان: <strong id="exam-id-show" class="font-en"></strong></p>
+        </div>
+    </div>
+
+    <div class="modal-bg" id="modal-del">
+        <div class="modal">
+            <button class="modal-x" id="modal-del-x"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-ic bad"><i class="fa-solid fa-eraser"></i></div>
+            <h2>حذف الامتحان؟</h2>
+            <p>الحذف هيمسح كل البيانات والنتائج نهائياً</p>
+            <div class="modal-btns">
+                <button class="btn btn-soft" id="btn-cancel-del">إلغاء</button>
+                <button class="btn btn-red" id="btn-confirm-del"><i class="fa-solid fa-trash-can"></i> حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="split-login" id="modal-register" style="display: none; position: fixed; inset: 0; z-index: 9999;">
+        <div class="split-visual">
+            <div class="sv-inner">
+                <div class="sv-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+                      
+                      <path d="M32 10L6 22l26 12 26-12L32 10z" fill="#374151" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+                      
+                      <path d="M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5" fill="#4B5563" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      
+                      <path d="M32 22v14" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+                      <circle cx="32" cy="22" r="3" fill="#F59E0B"/>
+                      <path d="M30 36h4l-1 8h-2l-1-8z" fill="#FBBF24"/>
+                    </svg>
+                </div>
+                <h2 id="sv-exam-title">نظام إدارة الامتحانات</h2>
+                <p id="sv-exam-sub">لوحة المعلم المتطورة</p>
+                <div class="sv-features">
+                    <div class="sv-feat"><i class="fa-solid fa-users"></i> إدارة آلاف الطلاب بسهولة</div>
+                    <div class="sv-feat"><i class="fa-solid fa-chart-pie"></i> تحليلات ذكية وتلقائية</div>
+                    <div class="sv-feat"><i class="fa-solid fa-shield-halved"></i> نظام مكافحة غش صارم</div>
+                </div>
+            </div>
+            <div class="sv-blobs">
+                <div class="blob b1"></div>
+                <div class="blob b2"></div>
+            </div>
+        </div>
+        <div class="split-form" style="position: relative;">
+            <div class="tutorial-cursor"></div>
+            <div class="mobile-hero">
+                <div class="mh-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="45" height="45">
+                      <path d="M32 10L6 22l26 12 26-12L32 10z" fill="#374151" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+                      <path d="M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5" fill="#4B5563" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M32 22v14" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+                      <circle cx="32" cy="22" r="3" fill="#F59E0B"/>
+                      <path d="M30 36h4l-1 8h-2l-1-8z" fill="#FBBF24"/>
+                    </svg>
+                </div>
+                <h1 id="mobile-exam-title">لوحة المعلم</h1>
+            </div>
+            <div class="form-panel">
+                <h1 class="form-title">أهلاً بك أستاذي!</h1>
+                <p class="form-sub">أدخل اسمك الكريم للبدء بإنشاء وإدارة الامتحانات</p>
+                
+                <div class="field-wrap">
+                    <label for="register-name-input">الاسم الكامل</label>
+                    <input type="text" class="field" id="register-name-input" placeholder="مثال: أ. أحمد محمد" autocomplete="off">
+                </div>
+
+                <button class="btn btn-accent submit-wide" id="btn-register" style="margin-top:0.8rem;">
+                    <i class="fa-solid fa-arrow-left"></i> دخول المنصة
+                </button>
+                <div style="margin-top:2rem; text-align:center;">
+                    <a href="policy.html" style="color:#666; font-size:0.85rem; text-decoration:underline;">
+                        <i class="fa-solid fa-shield-halved"></i> سياسة الأمان ومكافحة الغش المطبقة بالمنصة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script type="module" src="js/teacher.js"></script>
+</body>
+</html>
