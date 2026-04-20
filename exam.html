@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>نظام الامتحانات الآمن</title>
+    <meta name="description" content="نظام امتحانات إلكتروني آمن — واجهة الطالب">
+    <meta property="og:title" content="نظام الامتحانات الآمن">
+    <meta property="og:description" content="نظام امتحانات إلكتروني آمن مع حماية متقدمة ضد الغش">
+    <meta property="og:image" content="https://i.postimg.cc/kDrzDHGN/image-(16).jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div class="force-landscape" id="force-landscape">
+        <div class="fl-content">
+            <svg viewBox="0 0 24 24" fill="none" class="fl-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2" ry="2"/>
+                <path d="M12 12v.01"/>
+            </svg>
+            <h2>امتحان بنظام الشاشة العريضة</h2>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:1.5rem;">هذا الامتحان مصمم بنظام الكمبيوتر للعرض العريض (Split-Screen) لراحتك. يرجى الضغط للتحويل للوضع الأفقي.</p>
+            <button class="btn btn-accent" id="btn-force-landscape" style="width:100%; justify-content:center; margin-bottom:10px;">
+                <i class="fa-solid fa-expand"></i> تشغيل الشاشة العريضة
+            </button>
+            <button class="btn btn-outline" id="btn-skip-landscape" style="width:100%; justify-content:center; color:#fff; border-color:rgba(255,255,255,0.2);">
+                الاستمرار بالوضع العادي
+            </button>
+        </div>
+    </div>
+
+    <div class="load-overlay" id="load-overlay">
+        <div class="spin"></div>
+        <div class="load-txt">جاري التحميل...</div>
+    </div>
+
+    <div class="warn-screen" id="warn-screen">
+        <div class="warn-box">
+            <div class="warn-pulse"></div>
+            <div class="modal-ic bad"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h2>⚠️ تحذير! (إنذار أخير)</h2>
+            <p id="warn-text">تم رصد خروجك من الامتحان أو محاولة غش!<br>تم تسجيل إنذار ضدك. في حال تكرر الأمر سيتم طردك فوراً.</p>
+            <button class="btn btn-red" id="btn-dismiss-warn">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> فهمت — رجعني للامتحان
+            </button>
+        </div>
+    </div>
+
+    <div class="split-login" id="login-screen">
+        <div class="split-visual">
+            <div class="sv-inner">
+                <div class="sv-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="60" height="60">
+                      <path d="M32 10L6 22l26 12 26-12L32 10z" fill="#374151" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+                      <path d="M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5" fill="#4B5563" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M32 22v14" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+                      <circle cx="32" cy="22" r="3" fill="#F59E0B"/>
+                      <path d="M30 36h4l-1 8h-2l-1-8z" fill="#FBBF24"/>
+                    </svg>
+                </div>
+                <h2 id="sv-exam-title">نظام الامتحانات الآمن</h2>
+                <p id="sv-exam-sub">جاري التحميل...</p>
+                <div class="sv-features">
+                    <div class="sv-feat"><i class="fa-solid fa-shield-halved"></i> حماية متقدمة ضد الغش</div>
+                    <div class="sv-feat"><i class="fa-solid fa-eye"></i> مراقبة ذكية بالذكاء الاصطناعي</div>
+                    <div class="sv-feat"><i class="fa-solid fa-lock"></i> بيئة آمنة مشفرة</div>
+                </div>
+                <video id="screen-video" autoplay muted playsinline style="display:none;"></video>
+            </div>
+            <div class="sv-blobs">
+                <div class="blob b1"></div>
+                <div class="blob b2"></div>
+            </div>
+        </div>
+        <div class="split-form" style="position: relative;">
+            <div class="tutorial-cursor"></div>
+            <div class="mobile-hero">
+                <div class="mh-logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="45" height="45">
+                      <path d="M32 10L6 22l26 12 26-12L32 10z" fill="#374151" stroke="#ffffff" stroke-width="3" stroke-linejoin="round"/>
+                      <path d="M14 26.5V44c0 4 8 10 18 10s18-6 18-10V26.5" fill="#4B5563" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M32 22v14" stroke="#FBBF24" stroke-width="3" stroke-linecap="round"/>
+                      <circle cx="32" cy="22" r="3" fill="#F59E0B"/>
+                      <path d="M30 36h4l-1 8h-2l-1-8z" fill="#FBBF24"/>
+                    </svg>
+                </div>
+                <h1 id="mobile-exam-title">الامتحان</h1>
+            </div>
+            
+            <div class="form-panel" id="step-1">
+                <h1 class="form-title">مرحباً بك</h1>
+                <p class="form-sub" id="login-exam-title">جاري التحميل...</p>
+                <p style="font-size:0.85rem;color:var(--text-2);margin-bottom:1.5rem;">هذا الامتحان خاضع لمراقبة صارمة لمنع محاولات الغش. يرجى التأكد من التواجد في مكان هادئ.</p>
+                <button type="button" class="btn btn-accent submit-wide" id="btn-next-step">
+                    التالي <i class="fa-solid fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="form-panel hidden" id="step-2">
+                <button type="button" class="btn btn-soft btn-sm" id="btn-prev-step" style="margin-bottom:1rem; border-radius: 99px;">
+                   <i class="fa-solid fa-arrow-right"></i> رجوع
+                </button>
+                <h1 class="form-title">بيانات الطالب</h1>
+                <div class="login-err" id="login-err"></div>
+                <form id="login-form">
+                    <div class="field-wrap">
+                        <label for="student-name">الاسم الكامل</label>
+                        <input type="text" class="field" id="student-name" placeholder="مثال: أحمد محمد محمود" required autocomplete="off">
+                    </div>
+                    <div class="field-wrap">
+                        <label for="father-name">الصف / الشعبة (أو أي مُميز)</label>
+                        <input type="text" class="field" id="father-name" placeholder="مثال: 3 ثانوي أ" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-accent w-full" id="btn-start-exam" style="justify-content:center;">
+                        <i class="fa-solid fa-right-to-bracket"></i> دخول وبدء الامتحان
+                    </button>
+                    
+                    <div style="margin-top:2rem; text-align:center;">
+                        <a href="policy.html" style="color:#666; font-size:0.85rem; text-decoration:underline;">
+                            <i class="fa-solid fa-shield-halved"></i> سياسة الأمان ومكافحة الغش التلقائية
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="exam-ui" id="exam-ui">
+        <div class="exam-bar">
+            <div class="eb-right">
+                <div class="eb-logo">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </div>
+                <span class="eb-title" id="exam-title-bar"></span>
+            </div>
+            
+            <div style="display:flex; align-items:center; gap: 10px;">
+                <div class="font-size-controls" style="margin:0;">
+                    <button class="fz-btn" id="btn-fz-down" title="تصغير الخط">-A</button>
+                    <button class="fz-btn" id="btn-fz-up" title="تكبير الخط">+A</button>
+                </div>
+                <div class="timer" id="timer-box">
+                    <i class="fa-solid fa-clock"></i>
+                    <span id="timer-val">00:00</span>
+                </div>
+            </div>
+        </div>
+        <div class="exam-prog-area">
+            <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+            <div class="prog-txt" id="prog-txt">السؤال 1 من 1</div>
+        </div>
+        <div class="exam-body">
+            <div class="q-card" id="q-card">
+                <div class="q-num-label" id="q-label" style="justify-content:space-between;">
+                    <span></span>
+                    <button class="tts-btn" id="btn-tts" title="قراءة السؤال صوتاً"><i class="fa-solid fa-volume-high"></i></button>
+                </div>
+                <div class="q-card-content">
+                    <div class="q-txt" id="q-txt"></div>
+                    <div class="q-answers opts" id="q-opts"></div>
+                </div>
+            </div>
+            <div class="q-nav">
+                <button class="btn btn-soft" id="btn-prev"><i class="fa-solid fa-arrow-right"></i> السابق</button>
+                <button class="btn btn-accent" id="btn-next">التالي <i class="fa-solid fa-arrow-left"></i></button>
+                <button class="btn btn-green hidden" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> تسليم نهائي</button>
+            </div>
+        </div>
+    </div>
+
+    <video id="screen-video" autoplay muted playsinline style="position:fixed;opacity:0;pointer-events:none;width:1px;height:1px;top:0;left:0;z-index:-1;"></video>
+
+    <div class="done-screen" id="done-screen">
+        <div class="done-card" style="position: relative; z-index: 10;">
+            <div class="done-ic" id="done-ic"><i class="fa-solid fa-check"></i></div>
+            <h2 id="done-title">تم التسليم!</h2>
+            <p id="done-text">تم تسليم إجاباتك بنجاح.</p>
+        </div>
+    </div>
+
+    <div class="modal-bg" id="modal-submit">
+        <div class="modal">
+            <button class="modal-x" id="modal-submit-x"><i class="fa-solid fa-xmark"></i></button>
+            <div class="modal-ic warn"><i class="fa-solid fa-paper-plane"></i></div>
+            <h2>تأكيد التسليم</h2>
+            <p>هل أنت متأكد إنك عايز تسلم الإجابات بتاعتك؟</p>
+            <div class="modal-btns">
+                <button class="btn btn-soft" id="btn-cancel-sub">رجوع</button>
+                <button class="btn btn-green" id="btn-final-sub"><i class="fa-solid fa-check"></i> نعم، سلم</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script type="module" src="js/student.js"></script>
+</body>
+</html>
